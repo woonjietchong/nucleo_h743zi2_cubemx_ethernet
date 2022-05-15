@@ -1,12 +1,12 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    stm32h7xx_it.c
-  * @brief   Interrupt Service Routines.
+  * @file    LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/stm32h7xx_it.c 
+  * @author  MCD Application Team
+  * @brief   Main Interrupt Service Routines.
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2017 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -15,179 +15,130 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
 #include "stm32h7xx_it.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-/* USER CODE END Includes */
+#include "main.h"
+#include "cmsis_os.h"
 
 /* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN TD */
-
-/* USER CODE END TD */
-
 /* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
 /* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
 /* Private variables ---------------------------------------------------------*/
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
+extern ETH_HandleTypeDef EthHandle;
 /* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-/* External variables --------------------------------------------------------*/
-extern ETH_HandleTypeDef heth;
-extern TIM_HandleTypeDef htim6;
-
-/* USER CODE BEGIN EV */
-
-/* USER CODE END EV */
+void ETH_IRQHandler(void);
+/* Private functions ---------------------------------------------------------*/
 
 /******************************************************************************/
-/*           Cortex Processor Interruption and Exception Handlers          */
+/*            Cortex-M7 Processor Exceptions Handlers                         */
 /******************************************************************************/
+
 /**
-  * @brief This function handles Non maskable interrupt.
+  * @brief   This function handles NMI exception.
+  * @param  None
+  * @retval None
   */
 void NMI_Handler(void)
 {
-  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
-  /* USER CODE END NonMaskableInt_IRQn 0 */
-  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-  while (1)
-  {
-  }
-  /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
-  * @brief This function handles Hard fault interrupt.
+  * @brief  This function handles Hard Fault exception.
+  * @param  None
+  * @retval None
   */
 void HardFault_Handler(void)
 {
-  /* USER CODE BEGIN HardFault_IRQn 0 */
-
-  /* USER CODE END HardFault_IRQn 0 */
+  /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }
 
 /**
-  * @brief This function handles Memory management fault.
+  * @brief  This function handles Memory Manage exception.
+  * @param  None
+  * @retval None
   */
 void MemManage_Handler(void)
 {
-  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
-  /* USER CODE END MemoryManagement_IRQn 0 */
+  /* Go to infinite loop when Memory Manage exception occurs */
   while (1)
   {
-    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
-    /* USER CODE END W1_MemoryManagement_IRQn 0 */
   }
 }
 
 /**
-  * @brief This function handles Pre-fetch fault, memory access fault.
+  * @brief  This function handles Bus Fault exception.
+  * @param  None
+  * @retval None
   */
 void BusFault_Handler(void)
 {
-  /* USER CODE BEGIN BusFault_IRQn 0 */
-
-  /* USER CODE END BusFault_IRQn 0 */
+  /* Go to infinite loop when Bus Fault exception occurs */
   while (1)
   {
-    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
-    /* USER CODE END W1_BusFault_IRQn 0 */
   }
 }
 
 /**
-  * @brief This function handles Undefined instruction or illegal state.
+  * @brief  This function handles Usage Fault exception.
+  * @param  None
+  * @retval None
   */
 void UsageFault_Handler(void)
 {
-  /* USER CODE BEGIN UsageFault_IRQn 0 */
-
-  /* USER CODE END UsageFault_IRQn 0 */
+  /* Go to infinite loop when Usage Fault exception occurs */
   while (1)
   {
-    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
-    /* USER CODE END W1_UsageFault_IRQn 0 */
   }
 }
 
+
 /**
-  * @brief This function handles Debug monitor.
+  * @brief  This function handles Debug Monitor exception.
+  * @param  None
+  * @retval None
   */
 void DebugMon_Handler(void)
 {
-  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
-
-  /* USER CODE END DebugMonitor_IRQn 0 */
-  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
-
-  /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
-/******************************************************************************/
-/* STM32H7xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32h7xx.s).                    */
-/******************************************************************************/
-
 /**
-  * @brief This function handles TIM6 global interrupt, DAC1_CH1 and DAC1_CH2 underrun error interrupts.
+  * @brief  This function handles SysTick Handler.
+  * @param  None
+  * @retval None
   */
-void TIM6_DAC_IRQHandler(void)
+void SysTick_Handler(void)
 {
-  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
-
-  /* USER CODE END TIM6_DAC_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim6);
-  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
-
-  /* USER CODE END TIM6_DAC_IRQn 1 */
+  osSystickHandler();
 }
+  
 
+/******************************************************************************/
+/*                 STM32H7xx Peripherals Interrupt Handlers                   */
+/*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+/*  available peripheral interrupt handler's name please refer to the startup */
+/*  file (startup_stm32h7xx.s).                                               */
+/******************************************************************************/
 /**
-  * @brief This function handles Ethernet global interrupt.
+  * @brief  This function handles Ethernet interrupt request.
+  * @param  None
+  * @retval None
   */
 void ETH_IRQHandler(void)
 {
-  /* USER CODE BEGIN ETH_IRQn 0 */
-
-  /* USER CODE END ETH_IRQn 0 */
-  HAL_ETH_IRQHandler(&heth);
-  /* USER CODE BEGIN ETH_IRQn 1 */
-
-  /* USER CODE END ETH_IRQn 1 */
+  HAL_ETH_IRQHandler(&EthHandle);
 }
 
-/* USER CODE BEGIN 1 */
 
-/* USER CODE END 1 */
+/**
+  * @}
+  */ 
+
+/**
+  * @}
+  */
+
+

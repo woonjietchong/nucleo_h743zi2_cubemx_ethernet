@@ -1,13 +1,12 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * @file    LwIP/LwIP_HTTP_Server_Netconn_RTOS/Inc/main.h
+  * @author  MCD Application Team
+  * @brief   Header for main.c module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2017 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -16,69 +15,49 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
-
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
+#include "stm32h7xx_nucleo.h"
 
 /* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
 /* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
 
-/* USER CODE END EC */
+/*Static IP ADDRESS*/
+#define IP_ADDR0   ((uint8_t)10U)
+#define IP_ADDR1   ((uint8_t)3U)
+#define IP_ADDR2   ((uint8_t)112U)
+#define IP_ADDR3   ((uint8_t)2U)
+
+/*NETMASK*/
+#define NETMASK_ADDR0   ((uint8_t)255U)
+#define NETMASK_ADDR1   ((uint8_t)255U)
+#define NETMASK_ADDR2   ((uint8_t)255U)
+#define NETMASK_ADDR3   ((uint8_t)0U)
+
+/*Gateway Address*/
+#define GW_ADDR0   ((uint8_t)10U)
+#define GW_ADDR1   ((uint8_t)3U)
+#define GW_ADDR2   ((uint8_t)112U)
+#define GW_ADDR3   ((uint8_t)255U)
 
 /* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
+/* Exported functions ------------------------------------------------------- */
 
-/* USER CODE END EM */
-
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
-
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
-#define LD1_Pin GPIO_PIN_0
-#define LD1_GPIO_Port GPIOB
-#define LD3_Pin GPIO_PIN_14
-#define LD3_GPIO_Port GPIOB
-#define STLINK_RX_Pin GPIO_PIN_8
-#define STLINK_RX_GPIO_Port GPIOD
-#define STLINK_TX_Pin GPIO_PIN_9
-#define STLINK_TX_GPIO_Port GPIOD
-#define USB_OTG_FS_PWR_EN_Pin GPIO_PIN_10
-#define USB_OTG_FS_PWR_EN_GPIO_Port GPIOD
-#define USB_OTG_FS_OVCR_Pin GPIO_PIN_7
-#define USB_OTG_FS_OVCR_GPIO_Port GPIOG
-#define LD2_Pin GPIO_PIN_1
-#define LD2_GPIO_Port GPIOE
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* __MAIN_H */
+
+
+
