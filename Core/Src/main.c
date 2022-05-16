@@ -1,15 +1,12 @@
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    LwIP/LwIP_HTTP_Server_Netconn_RTOS/Src/main.c 
-  * @author  MCD Application Team
-  * @brief   This sample code implements a http server application based on 
-  *          Netconn API of LwIP stack and FreeRTOS. This application uses 
-  *          STM32H7xx the ETH HAL API to transmit and receive data. 
-  *          The communication is done with a web browser of a remote PC.
+  * @file           : main.c
+  * @brief          : Main program body
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2017 STMicroelectronics.
+  * Copyright (c) 2022 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -18,58 +15,109 @@
   *
   ******************************************************************************
   */
-
+/* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+//#include "lwip.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "ethernetif.h"
 #include "lwip/netif.h"
 #include "lwip/tcpip.h"
 #include "httpserver_netconn.h"
 #include "app_ethernet.h"
+/* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
 /* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+/* USER CODE END PD */
+
 /* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
 /* Private variables ---------------------------------------------------------*/
+
+UART_HandleTypeDef huart3;
+
+//PCD_HandleTypeDef hpcd_USB_OTG_FS;
+
+osThreadId defaultTaskHandle;
+osThreadId myTask02Handle;
+osThreadId myTask03Handle;
+osThreadId myTask04Handle;
+/* USER CODE BEGIN PV */
 struct netif gnetif; /* network interface structure */
+/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-static void SystemClock_Config(void);
+void SystemClock_Config(void);
+static void MPU_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_USART3_UART_Init(void);
+static void MX_USB_OTG_FS_PCD_Init(void);
+void StartDefaultTask(void const * argument);
+void StartTask02(void const * argument);
+void StartTask03(void const * argument);
+void StartTask04(void const * argument);
+
+/* USER CODE BEGIN PFP */
 static void BSP_Config(void);
 static void StartThread(void const * argument);
 static void Netif_Config(void);
 static void MPU_Config(void);
 static void CPU_CACHE_Enable(void);
+/* USER CODE END PFP */
 
-/* Private functions ---------------------------------------------------------*/
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
 
 /**
-  * @brief  Main program
-  * @param  None
-  * @retval None
+  * @brief  The application entry point.
+  * @retval int
   */
 int main(void)
 {
-  /* Configure the MPU attributes as Device memory for ETH DMA descriptors */
-  MPU_Config();
-  
-  /* Enable the CPU Cache */
-  CPU_CACHE_Enable();
+  /* USER CODE BEGIN 1 */
 
-  /* STM32H7xx HAL library initialization:
-       - Configure the TIM6 to generate an interrupt each 1 msec
-       - Set NVIC Group Priority to 4
-       - Low Level Initialization
-     */
+  /* USER CODE END 1 */
+
+  /* MPU Configuration--------------------------------------------------------*/
+  MPU_Config();
+
+  /* Enable I-Cache---------------------------------------------------------*/
+  SCB_EnableICache();
+
+  /* Enable D-Cache---------------------------------------------------------*/
+  SCB_EnableDCache();
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();  
-  
-  /* Configure the system clock to 400 MHz */
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
   SystemClock_Config(); 
   
+  /* USER CODE BEGIN SysInit */
   /* Configure the LCD ...*/
   BSP_Config();
-  
+  /* USER CODE END SysInit */
+
   /* Init thread */
   osThreadDef(Start, StartThread, osPriorityNormal, 0, configMINIMAL_STACK_SIZE * 4);
   osThreadCreate (osThread(Start), NULL);
@@ -180,7 +228,7 @@ static void Netif_Config(void)
   * @param  None
   * @retval None
   */
-static void SystemClock_Config(void)
+void SystemClock_Config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;
